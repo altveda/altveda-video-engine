@@ -1,0 +1,50 @@
+name: Render AltVeda Video
+
+on:
+  repository_dispatch:
+    types: [render_video]
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Install Remotion Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libgbm-dev \
+            libnss3 \
+            libxss1 \
+            libasound2 \
+            libxtst6 \
+            fonts-liberation
+
+      - name: Render Video
+        env:
+          GOOGLE_TTS_API_KEY: ${{ secrets.GOOGLE_TTS_API_KEY }}
+          INPUT_PROPS: ${{ github.event.client_payload.inputProps }}
+          COMPOSITION_ID: ${{ github.event.client_payload.compositionId }}
+        run: |
+          npx remotion render $COMPOSITION_ID out/video.mp4 --props "$INPUT_PROPS"
+
+      - name: Upload to R2
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: auto
+        run: |
+          # Upload to the coherent /factory-renders directory
+          aws s3 cp out/video.mp4 s3://${{ secrets.R2_BUCKET }}/factory-renders/${{ github.event.client_payload.jobId }}.mp4 \
+            --endpoint-url ${{ secrets.R2_ENDPOINT_URL }}
