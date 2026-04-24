@@ -20,7 +20,7 @@ jobs:
         run: |
           npm install
           sudo apt-get update
-          sudo apt-get install -y libgbm-dev libnss3 libxss1 libasound2 libxtst6 fonts-liberation
+          sudo apt-get install -y libgbm-dev libnss3 libxss1 libasound2t64 libxtst6 fonts-liberation
 
       - name: Render Video
         env:
