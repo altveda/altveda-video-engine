@@ -11,13 +11,6 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Create Swap File
-        run: |
-          sudo fallocate -l 4G /swapfile
-          sudo chmod 600 /swapfile
-          sudo mkswap /swapfile
-          sudo swapon /swapfile
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -34,9 +27,8 @@ jobs:
         env:
           GOOGLE_TTS_API_KEY: ${{ secrets.GOOGLE_TTS_API_KEY }}
         run: |
-          # Render and verify the file exists
-          npx remotion render ${{ github.event.client_payload.compositionId }} video.mp4 --props '${{ toJson(github.event.client_payload.inputProps) }}'
-          if [ ! -f video.mp4 ]; then echo "Video file not found!"; exit 1; fi
+          # Use local remotion binary for maximum stability
+          ./node_modules/.bin/remotion render ${{ github.event.client_payload.compositionId }} video.mp4 --props '${{ toJson(github.event.client_payload.inputProps) }}'
 
       - name: Upload to R2
         env:
@@ -44,6 +36,6 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: auto
         run: |
-          # Use the pre-installed AWS CLI to push directly to R2
+          # Use AWS CLI to push directly to R2 factory-renders folder
           aws s3 cp video.mp4 s3://${{ secrets.R2_BUCKET }}/factory-renders/${{ github.event.client_payload.jobId }}.mp4 \
             --endpoint-url ${{ secrets.R2_ENDPOINT_URL }}
