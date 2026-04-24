@@ -28,8 +28,8 @@ jobs:
         env:
           GOOGLE_TTS_API_KEY: ${{ secrets.GOOGLE_TTS_API_KEY }}
         run: |
-          # Use Remotion CLI directly for full control
-          npx remotion render ${{ github.event.client_payload.compositionId }} out/video.mp4 --props '${{ toJson(github.event.client_payload.inputProps) }}'
+          # Render directly to root for absolute path certainty
+          npx remotion render ${{ github.event.client_payload.compositionId }} video.mp4 --props '${{ toJson(github.event.client_payload.inputProps) }}'
 
       - name: Upload to R2
         env:
@@ -37,6 +37,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: auto
         run: |
-          # Use AWS CLI to upload to Cloudflare R2
-          aws s3 cp out/video.mp4 s3://${{ secrets.R2_BUCKET }}/factory-renders/${{ github.event.client_payload.jobId }}.mp4 \
+          # Use the verified /factory-renders path
+          aws s3 cp video.mp4 s3://${{ secrets.R2_BUCKET }}/factory-renders/${{ github.event.client_payload.jobId }}.mp4 \
             --endpoint-url ${{ secrets.R2_ENDPOINT_URL }}
+
