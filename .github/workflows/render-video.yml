@@ -11,14 +11,6 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Create Swap File
-        run: |
-          sudo fallocate -l 4G /swapfile
-          sudo chmod 600 /swapfile
-          sudo mkswap /swapfile
-          sudo swapon /swapfile
-          free -h
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -26,18 +18,18 @@ jobs:
           cache: 'npm'
 
       - name: Install Dependencies
-        run: npm install
+        run: |
+          npm install
+          # Install necessary Linux libs for Headless Chrome
+          sudo apt-get update
+          sudo apt-get install -y libgbm-dev libnss3 libxss1 libasound2 libxtst6 fonts-liberation
 
       - name: Render Video
-        # Use the official Remotion action to handle Chrome/Dependencies
-        uses: remotion-dev/github-action@v1
-        with:
-          entry-point: src/index.ts
-          composition-id: ${{ github.event.client_payload.compositionId }}
-          output-location: out/video.mp4
-          props: ${{ github.event.client_payload.inputProps }}
         env:
           GOOGLE_TTS_API_KEY: ${{ secrets.GOOGLE_TTS_API_KEY }}
+        run: |
+          # Use Remotion CLI directly for full control
+          npx remotion render ${{ github.event.client_payload.compositionId }} out/video.mp4 --props '${{ toJson(github.event.client_payload.inputProps) }}'
 
       - name: Upload to R2
         env:
@@ -45,6 +37,6 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: auto
         run: |
-          # Enforce structural coherence: factory-renders/ prefix
+          # Use AWS CLI to upload to Cloudflare R2
           aws s3 cp out/video.mp4 s3://${{ secrets.R2_BUCKET }}/factory-renders/${{ github.event.client_payload.jobId }}.mp4 \
             --endpoint-url ${{ secrets.R2_ENDPOINT_URL }}
