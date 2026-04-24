@@ -64,6 +64,19 @@ export const RemotionRoot: React.FC = () => {
         }}
       />
       <Composition
+        id="BentoSpotlight_Demo"
+        component={BentoSpotlight}
+        durationInFrames={150}
+        fps={30}
+        width={1080}
+        height={1080}
+        defaultProps={{
+          productName: "Amla",
+          finding: "20x More Vit C",
+          badge: "VAIDYA CHOICE"
+        }}
+      />
+      <Composition
         id="AmlaVsOrange_Static"
         component={AmlaVsOrange}
         durationInFrames={1}
