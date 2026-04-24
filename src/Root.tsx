@@ -1,6 +1,7 @@
 import { Composition } from 'remotion';
 import { CinematicScience } from './compositions/factory/CinematicScience';
 import { SkepticsChoice } from './compositions/factory/SkepticsChoice';
+import { FoundersHeart } from './compositions/factory/FoundersHeart';
 import { AmlaVsOrange } from './compositions/static/AmlaVsOrange';
 import React from 'react';
 
@@ -33,6 +34,19 @@ export const RemotionRoot: React.FC = () => {
           rightTitle: "1 Amla",
           rightValue: "800mg",
           hook: "Vitamin C Purity Test"
+        }}
+      />
+      <Composition
+        id="FoundersHeart_Demo"
+        component={FoundersHeart}
+        durationInFrames={300}
+        fps={30}
+        width={1080}
+        height={1920}
+        defaultProps={{
+          quote: "If you cannot explain what is in it, you should not be selling it.",
+          subtext: "My journey to Ayurveda started with a need for truth in wellness. No fillers. No binders. Just pure extracts.",
+          storyPoint: "THE ALTVEDA MISSION"
         }}
       />
       <Composition
