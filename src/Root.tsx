@@ -50,6 +50,20 @@ export const RemotionRoot: React.FC = () => {
         }}
       />
       <Composition
+        id="DataScroll_Demo"
+        component={DataScroll}
+        durationInFrames={150}
+        fps={30}
+        width={1080}
+        height={1920}
+        defaultProps={{
+          label: "CORTISOL CONTROL",
+          value: "27.9%",
+          metricName: "REDUCTION",
+          studySource: "Chandrasekhar et al. (2012)"
+        }}
+      />
+      <Composition
         id="AmlaVsOrange_Static"
         component={AmlaVsOrange}
         durationInFrames={1}
