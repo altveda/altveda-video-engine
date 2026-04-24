@@ -20,24 +20,16 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Install Remotion Dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-            libgbm-dev \
-            libnss3 \
-            libxss1 \
-            libasound2 \
-            libxtst6 \
-            fonts-liberation
-
       - name: Render Video
+        # Use the official Remotion action to handle Chrome/Dependencies
+        uses: remotion-dev/github-action@v1
+        with:
+          entry-point: src/index.ts
+          composition-id: ${{ github.event.client_payload.compositionId }}
+          output-location: out/video.mp4
+          props: ${{ github.event.client_payload.inputProps }}
         env:
           GOOGLE_TTS_API_KEY: ${{ secrets.GOOGLE_TTS_API_KEY }}
-          INPUT_PROPS: ${{ github.event.client_payload.inputProps }}
-          COMPOSITION_ID: ${{ github.event.client_payload.compositionId }}
-        run: |
-          npx remotion render $COMPOSITION_ID out/video.mp4 --props "$INPUT_PROPS"
 
       - name: Upload to R2
         env:
@@ -45,6 +37,6 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: auto
         run: |
-          # Upload to the coherent /factory-renders directory
+          # Enforce structural coherence: factory-renders/ prefix
           aws s3 cp out/video.mp4 s3://${{ secrets.R2_BUCKET }}/factory-renders/${{ github.event.client_payload.jobId }}.mp4 \
             --endpoint-url ${{ secrets.R2_ENDPOINT_URL }}
