@@ -11,6 +11,13 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      - name: Create Swap File
+        run: |
+          sudo fallocate -l 4G /swapfile
+          sudo chmod 600 /swapfile
+          sudo mkswap /swapfile
+          sudo swapon /swapfile
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -20,7 +27,6 @@ jobs:
       - name: Install Dependencies
         run: |
           npm install
-          # Install necessary Linux libs for Headless Chrome
           sudo apt-get update
           sudo apt-get install -y libgbm-dev libnss3 libxss1 libasound2 libxtst6 fonts-liberation
 
@@ -28,16 +34,17 @@ jobs:
         env:
           GOOGLE_TTS_API_KEY: ${{ secrets.GOOGLE_TTS_API_KEY }}
         run: |
-          # Render directly to root for absolute path certainty
           npx remotion render ${{ github.event.client_payload.compositionId }} video.mp4 --props '${{ toJson(github.event.client_payload.inputProps) }}'
 
-      - name: Upload to R2
+      - name: Upload to R2 (Direct)
+        uses: jakejarvis/s3-sync-action@master
+        with:
+          args: --follow-symlinks
         env:
+          AWS_S3_BUCKET: ${{ secrets.R2_BUCKET }}
           AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: auto
-        run: |
-          # Use the verified /factory-renders path
-          aws s3 cp video.mp4 s3://${{ secrets.R2_BUCKET }}/factory-renders/${{ github.event.client_payload.jobId }}.mp4 \
-            --endpoint-url ${{ secrets.R2_ENDPOINT_URL }}
-
+          AWS_REGION: 'auto'
+          AWS_S3_ENDPOINT: ${{ secrets.R2_ENDPOINT_URL }}
+          SOURCE_DIR: '.'
+          DEST_DIR: 'factory-renders'
