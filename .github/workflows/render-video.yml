@@ -34,17 +34,16 @@ jobs:
         env:
           GOOGLE_TTS_API_KEY: ${{ secrets.GOOGLE_TTS_API_KEY }}
         run: |
+          # Render and verify the file exists
           npx remotion render ${{ github.event.client_payload.compositionId }} video.mp4 --props '${{ toJson(github.event.client_payload.inputProps) }}'
+          if [ ! -f video.mp4 ]; then echo "Video file not found!"; exit 1; fi
 
-      - name: Upload to R2 (Direct)
-        uses: jakejarvis/s3-sync-action@master
-        with:
-          args: --follow-symlinks
+      - name: Upload to R2
         env:
-          AWS_S3_BUCKET: ${{ secrets.R2_BUCKET }}
           AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
-          AWS_REGION: 'auto'
-          AWS_S3_ENDPOINT: ${{ secrets.R2_ENDPOINT_URL }}
-          SOURCE_DIR: '.'
-          DEST_DIR: 'factory-renders'
+          AWS_DEFAULT_REGION: auto
+        run: |
+          # Use the pre-installed AWS CLI to push directly to R2
+          aws s3 cp video.mp4 s3://${{ secrets.R2_BUCKET }}/factory-renders/${{ github.event.client_payload.jobId }}.mp4 \
+            --endpoint-url ${{ secrets.R2_ENDPOINT_URL }}
