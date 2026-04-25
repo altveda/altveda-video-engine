@@ -2,6 +2,8 @@ import { Composition } from 'remotion';
 import { CinematicScience } from './compositions/factory/CinematicScience';
 import { SkepticsChoice } from './compositions/factory/SkepticsChoice';
 import { FoundersHeart } from './compositions/factory/FoundersHeart';
+import { DataScroll } from './compositions/factory/DataScroll';
+import { BentoSpotlight } from './compositions/factory/BentoSpotlight';
 import { AmlaVsOrange } from './compositions/static/AmlaVsOrange';
 import React from 'react';
 
