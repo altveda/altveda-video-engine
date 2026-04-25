@@ -4,12 +4,26 @@ import { SkepticsChoice } from './compositions/factory/SkepticsChoice';
 import { FoundersHeart } from './compositions/factory/FoundersHeart';
 import { DataScroll } from './compositions/factory/DataScroll';
 import { BentoSpotlight } from './compositions/factory/BentoSpotlight';
+import { HeroAI } from './compositions/factory/HeroAI';
 import { AmlaVsOrange } from './compositions/static/AmlaVsOrange';
 import React from 'react';
 
 export const RemotionRoot: React.FC = () => {
   return (
     <>
+      <Composition
+        id="HeroAI-Template"
+        component={HeroAI}
+        durationInFrames={300}
+        fps={30}
+        width={1080}
+        height={1920}
+        defaultProps={{
+          imageUrl: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?auto=format&fit=crop&q=80&w=1080",
+          title: "AUTONOMOUS AYURVEDA",
+          subtitle: "Driven by Data. Rooted in Nature."
+        }}
+      />
       <Composition
         id="CinematicScience-Demo"
         component={CinematicScience}
