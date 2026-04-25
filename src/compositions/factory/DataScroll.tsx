@@ -2,9 +2,7 @@ import { AbsoluteFill, interpolate, useCurrentFrame, useVideoConfig, spring } fr
 import { loadFont } from '@remotion/google-fonts/Inter';
 import React from 'react';
 
-loadFont({
-  weights: ['400', '700', '900'],
-});
+const { fontFamily } = loadFont();
 
 export const DataScroll: React.FC<{
   label: string;
@@ -27,7 +25,7 @@ export const DataScroll: React.FC<{
   return (
     <AbsoluteFill style={{ 
       backgroundColor: '#0A0F0B', // Professional Deep Dark Green
-      fontFamily: 'Inter, sans-serif',
+      fontFamily,
       color: 'white',
       padding: 60
     }}>

@@ -1,9 +1,8 @@
-import { AbsoluteFill, interpolate, useCurrentFrame, useVideoConfig, spring, loadFont } from 'remotion';
+import { AbsoluteFill, interpolate, useCurrentFrame, useVideoConfig, spring } from 'remotion';
+import { loadFont } from '@remotion/google-fonts/Inter';
 import React from 'react';
 
-loadFont('Inter', {
-  weights: ['400', '700', '900'],
-});
+const { fontFamily } = loadFont();
 
 export const BentoSpotlight: React.FC<{
   productName: string;
@@ -23,7 +22,7 @@ export const BentoSpotlight: React.FC<{
   return (
     <AbsoluteFill style={{ 
       backgroundColor: '#FAF7F2', 
-      fontFamily: 'Inter, sans-serif',
+      fontFamily,
       padding: 40
     }}>
       <div style={{

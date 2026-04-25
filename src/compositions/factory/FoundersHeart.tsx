@@ -2,9 +2,7 @@ import { AbsoluteFill, interpolate, useCurrentFrame, useVideoConfig, spring } fr
 import { loadFont } from '@remotion/google-fonts/PlayfairDisplay';
 import React from 'react';
 
-loadFont({
-  weights: ['400', '700', '900'],
-});
+const { fontFamily } = loadFont();
 
 export const FoundersHeart: React.FC<{
   quote: string;
@@ -24,7 +22,7 @@ export const FoundersHeart: React.FC<{
   return (
     <AbsoluteFill style={{ 
       backgroundColor: '#FAF7F2', 
-      fontFamily: '"Playfair Display", serif',
+      fontFamily,
       padding: 80,
       justifyContent: 'center',
       alignItems: 'center'

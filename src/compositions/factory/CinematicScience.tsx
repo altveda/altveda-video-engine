@@ -2,9 +2,7 @@ import { AbsoluteFill, interpolate, useCurrentFrame, useVideoConfig, spring } fr
 import { loadFont } from '@remotion/google-fonts/Inter';
 import React from 'react';
 
-loadFont({
-  weights: ['400', '900'],
-});
+const { fontFamily } = loadFont();
 
 export const CinematicScience: React.FC<{
   productName: string;
@@ -28,7 +26,7 @@ export const CinematicScience: React.FC<{
   return (
     <AbsoluteFill style={{ 
       backgroundColor: '#FAF7F2', 
-      fontFamily: 'Inter, sans-serif',
+      fontFamily,
       justifyContent: 'center',
       alignItems: 'center',
       overflow: 'hidden'

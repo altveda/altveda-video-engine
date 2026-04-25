@@ -2,9 +2,7 @@ import { AbsoluteFill, interpolate, useCurrentFrame, useVideoConfig, spring } fr
 import { loadFont } from '@remotion/google-fonts/Inter';
 import React from 'react';
 
-loadFont({
-  weights: ['400', '900'],
-});
+const { fontFamily } = loadFont();
 
 export const SkepticsChoice: React.FC<{
   leftTitle: string;
@@ -26,7 +24,7 @@ export const SkepticsChoice: React.FC<{
   const dividerX = interpolate(splitProgress, [0, 1], [0, width / 2]);
 
   return (
-    <AbsoluteFill style={{ backgroundColor: '#FAF7F2', fontFamily: 'Inter, sans-serif' }}>
+    <AbsoluteFill style={{ backgroundColor: '#FAF7F2', fontFamily }}>
       {/* Left Side: The "Generic" Skepticism */}
       <div style={{
         position: 'absolute',
