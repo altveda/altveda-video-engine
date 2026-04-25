@@ -108,9 +108,8 @@ export const CinematicScience: React.FC<{
       {/* Audio Layers */}
       {voiceUrl && <Audio src={voiceUrl} volume={1.5} />}
       <Audio 
-        src="https://reels.altveda.in/brand-assets/meditative-tech-ambient.mp3" 
-        volume={0.2} 
-        loop 
+        src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" 
+        volume={0.1} 
       />
     </AbsoluteFill>
   );

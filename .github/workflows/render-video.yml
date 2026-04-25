@@ -26,7 +26,7 @@ jobs:
         env:
           GOOGLE_TTS_API_KEY: ${{ secrets.GOOGLE_TTS_API_KEY }}
         run: |
-          # Use local remotion binary for maximum stability
+          # Render and verify the file exists
           ./node_modules/.bin/remotion render ${{ github.event.client_payload.compositionId }} video.mp4 --props '${{ toJson(github.event.client_payload.inputProps) }}'
 
       - name: Upload to R2
