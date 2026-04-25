@@ -11,7 +11,7 @@ export const RemotionRoot: React.FC = () => {
   return (
     <>
       <Composition
-        id="CinematicScience_Demo"
+        id="CinematicScience-Demo"
         component={CinematicScience}
         durationInFrames={300}
         fps={30}
@@ -24,7 +24,7 @@ export const RemotionRoot: React.FC = () => {
         }}
       />
       <Composition
-        id="SkepticsChoice_Demo"
+        id="SkepticsChoice-Demo"
         component={SkepticsChoice}
         durationInFrames={150}
         fps={30}
@@ -39,7 +39,7 @@ export const RemotionRoot: React.FC = () => {
         }}
       />
       <Composition
-        id="FoundersHeart_Demo"
+        id="FoundersHeart-Demo"
         component={FoundersHeart}
         durationInFrames={300}
         fps={30}
@@ -52,7 +52,7 @@ export const RemotionRoot: React.FC = () => {
         }}
       />
       <Composition
-        id="DataScroll_Demo"
+        id="DataScroll-Demo"
         component={DataScroll}
         durationInFrames={150}
         fps={30}
@@ -66,7 +66,7 @@ export const RemotionRoot: React.FC = () => {
         }}
       />
       <Composition
-        id="BentoSpotlight_Demo"
+        id="BentoSpotlight-Demo"
         component={BentoSpotlight}
         durationInFrames={150}
         fps={30}
@@ -79,7 +79,7 @@ export const RemotionRoot: React.FC = () => {
         }}
       />
       <Composition
-        id="AmlaVsOrange_Static"
+        id="AmlaVsOrange-Static"
         component={AmlaVsOrange}
         durationInFrames={1}
         fps={30}
