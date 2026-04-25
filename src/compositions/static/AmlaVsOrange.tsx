@@ -1,14 +1,12 @@
-import { AbsoluteFill, loadFont } from 'remotion';
+import { AbsoluteFill } from 'remotion';
 import { loadFont as loadInter } from '@remotion/google-fonts/Inter';
 import React from 'react';
 
-loadInter({
-  weights: ['400', '700', '900'],
-});
+const { fontFamily } = loadInter();
 
 export const AmlaVsOrange: React.FC = () => {
   return (
-    <AbsoluteFill style={{ backgroundColor: '#FAF7F2', padding: 60, fontFamily: 'Inter, sans-serif' }}>
+    <AbsoluteFill style={{ backgroundColor: '#FAF7F2', padding: 60, fontFamily }}>
       {/* Header */}
       <div style={{ marginBottom: 40 }}>
         <h1 style={{ fontSize: 80, fontWeight: 900, color: '#2C2C2C', margin: 0, letterSpacing: '-0.02em' }}>
