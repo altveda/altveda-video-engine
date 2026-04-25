@@ -1,6 +1,7 @@
-import { AbsoluteFill, interpolate, useCurrentFrame, useVideoConfig, spring } from 'remotion';
+import { AbsoluteFill, interpolate, useCurrentFrame, useVideoConfig, spring, Audio, staticFile } from 'remotion';
 import { loadFont } from '@remotion/google-fonts/Inter';
-import React from 'react';
+import { fetchVoice } from '../../utils/tts';
+import React, { useEffect, useState } from 'react';
 
 const { fontFamily } = loadFont();
 
@@ -11,6 +12,12 @@ export const CinematicScience: React.FC<{
 }> = ({ productName, tagline, finding }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
+  const [voiceUrl, setVoiceUrl] = useState<string | null>(null);
+
+  // Fetch Voice-over on mount
+  useEffect(() => {
+    fetchVoice(`${productName}. ${tagline}. ${finding}`).then(setVoiceUrl);
+  }, [productName, tagline, finding]);
 
   // Opacity animations
   const productOpacity = interpolate(frame, [0, 60], [0, 1], { extrapolateRight: 'clamp' });
@@ -97,6 +104,14 @@ export const CinematicScience: React.FC<{
       <div style={{ position: 'absolute', top: 60, right: 60, fontWeight: 900, fontSize: 32, color: '#7C9A7E', opacity: 0.8 }}>
         ALTVEDA
       </div>
+
+      {/* Audio Layers */}
+      {voiceUrl && <Audio src={voiceUrl} volume={1.5} />}
+      <Audio 
+        src="https://reels.altveda.in/brand-assets/meditative-tech-ambient.mp3" 
+        volume={0.2} 
+        loop 
+      />
     </AbsoluteFill>
   );
 };
