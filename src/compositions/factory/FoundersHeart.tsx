@@ -1,7 +1,8 @@
-import { AbsoluteFill, interpolate, useCurrentFrame, useVideoConfig, spring, loadFont } from 'remotion';
+import { AbsoluteFill, interpolate, useCurrentFrame, useVideoConfig, spring } from 'remotion';
+import { loadFont } from '@remotion/google-fonts/PlayfairDisplay';
 import React from 'react';
 
-loadFont('Playfair Display', {
+loadFont({
   weights: ['400', '700', '900'],
 });
 

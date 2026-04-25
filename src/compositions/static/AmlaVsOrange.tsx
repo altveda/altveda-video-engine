@@ -1,7 +1,8 @@
 import { AbsoluteFill, loadFont } from 'remotion';
+import { loadFont as loadInter } from '@remotion/google-fonts/Inter';
 import React from 'react';
 
-loadFont('Inter', {
+loadInter({
   weights: ['400', '700', '900'],
 });
 
